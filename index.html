@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogos Clássicos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container text-center mt-5">
+        <h1>Boas Vindas</h1>
+        <h2>Jogos em JS</h2>
+        <div class="card mt-4">
+            <div class="card-body">
+                <div class="buttons">
+                    <button class="btn btn-primary btn-lg m-2" onclick="showAlert('jogo-da-memoria.html', 'Jogo da Memória')">Jogo da Memória</button>
+                    <button class="btn btn-primary btn-lg m-2" onclick="showAlert('forca.html', 'Forca')">Forca</button>
+                    <button class="btn btn-primary btn-lg m-2" onclick="showAlert('jogo-da-digitacao.html', 'Jogo da Digitação')">Jogo da Digitação</button>
+                    <button class="btn btn-primary btn-lg m-2" onclick="showAlert('snake.html', 'Snake')">Snake</button>
+                    <button class="btn btn-primary btn-lg m-2" onclick="showAlert('jogo-da-velha.html', 'Jogo da Velha')">Jogo da Velha</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function showAlert(gameUrl, gameName) {
+            Swal.fire({
+                title: 'Iniciar ' + gameName + '?',
+                text: 'Você está prestes a começar o ' + gameName + '.',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Sim, iniciar!',
+                cancelButtonText: 'Não, voltar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = gameUrl;
+                }
+            });
+        }
+    </script>
+</body>
+</html>
