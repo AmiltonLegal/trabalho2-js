@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da digitação</title>
+    <style>
+        #word { font-size: 2em; }
+        .correct { color: green; }
+        .incorrect { color: red; }
+    </style>
+</head>
+<body>
+    <div id="word"></div>
+    <input type="text" id="input" autofocus>
+    <div id="timer">60</div>
+    <div id="score">0</div>
+    <script>
+        const words = ["palavra", "javascript", "tech", "programação", "computador"];
+        let currentWord = "";
+        let currentIndex = 0;
+        let score = 0;
+        let timeLeft = 60;
+        const wordDiv = document.getElementById("word");
+        const input = document.getElementById("input");
+        const timerDiv = document.getElementById("timer");
+        const scoreDiv = document.getElementById("score");
+
+        function startGame() {
+            currentWord = words[Math.floor(Math.random() * words.length)];
+            wordDiv.textContent = currentWord;
+            input.value = "";
+            currentIndex = 0;
+            updateTimer();
+            const timer = setInterval(() => {
+                timeLeft--;
+                updateTimer();
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    endGame();
+                }
+            }, 1000);
+        }
+
+        function updateTimer() {
+            timerDiv.textContent = timeLeft;
+        }
+
+        function endGame() {
+            alert("Tempo esgotado! Sua pontuação: " + score);
+        }
+
+        input.addEventListener("input", () => {
+            const typedChar = input.value[currentIndex];
+            if (typedChar === currentWord[currentIndex]) {
+                currentIndex++;
+                wordDiv.innerHTML = `<span class="correct">${currentWord.slice(0, currentIndex)}</span>${currentWord.slice(currentIndex)}`;
+                if (currentIndex === currentWord.length) {
+                    score++;
+                    scoreDiv.textContent = score;
+                    startGame();
+                }
+            } else {
+                timeLeft -= 3;
+                updateTimer();
+            }
+        });
+
+        startGame();
+    </script>
+</body>
+</html>

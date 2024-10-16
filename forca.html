@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forca</title>
+    <style>
+        #word { font-size: 2em; letter-spacing: 0.5em; }
+        #lives { font-size: 1.5em; color: red; }
+        #message { font-size: 1.2em; }
+    </style>
+</head>
+<body>
+    <div id="word"></div>
+    <div id="lives">Vidas: 6</div>
+    <div id="message"></div>
+    <input type="text" id="input" maxlength="1" autofocus>
+    <script>
+        const words = ["javascript", "programacao", "computador", "desenvolvimento", "internet"];
+        let selectedWord = "";
+        let displayedWord = "";
+        let lives = 6;
+        const wordDiv = document.getElementById("word");
+        const livesDiv = document.getElementById("lives");
+        const messageDiv = document.getElementById("message");
+        const input = document.getElementById("input");
+
+        function startGame() {
+            selectedWord = words[Math.floor(Math.random() * words.length)];
+            displayedWord = "_".repeat(selectedWord.length);
+            wordDiv.textContent = displayedWord.split("").join(" ");
+            lives = 6;
+            livesDiv.textContent = `Vidas: ${lives}`;
+            messageDiv.textContent = "";
+            input.value = "";
+        }
+
+        function updateWord(letter) {
+            let newDisplayedWord = "";
+            for (let i = 0; i < selectedWord.length; i++) {
+                if (selectedWord[i] === letter) {
+                    newDisplayedWord += letter;
+                } else {
+                    newDisplayedWord += displayedWord[i];
+                }
+            }
+            displayedWord = newDisplayedWord;
+            wordDiv.textContent = displayedWord.split("").join(" ");
+        }
+
+        function checkGameStatus() {
+            if (displayedWord === selectedWord) {
+                messageDiv.textContent = "Parabéns! Você adivinhou a palavra!";
+                input.disabled = true;
+            } else if (lives <= 0) {
+                messageDiv.textContent = `Você perdeu! A palavra era: ${selectedWord}`;
+                input.disabled = true;
+            }
+        }
+
+        input.addEventListener("input", () => {
+            const letter = input.value.toLowerCase();
+            input.value = "";
+            if (selectedWord.includes(letter)) {
+                updateWord(letter);
+            } else {
+                lives--;
+                livesDiv.textContent = `Vidas: ${lives}`;
+            }
+            checkGameStatus();
+        });
+
+        startGame();
+    </script>
+</body>
+</html>
+

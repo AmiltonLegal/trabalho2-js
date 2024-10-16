@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da memória</title>
+</head>
+<body>
+    <style>
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-gap: 10px;
+            justify-content: center;
+            margin-top: 50px;
+        }
+        .cell {
+            width: 100px;
+            height: 100px;
+            background-color: grey;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="grid" id="grid">
+    </div>
+    <script>
+        const grid = document.getElementById('grid');
+        const numRows = 2;
+        const numCols = 3;
+        let sequence = [];
+        let userSequence = [];
+        let level = 0;
+
+        function createGrid() {
+            for (let i = 0; i < numRows * numCols; i++) {
+                const cell = document.createElement('div');
+                cell.classList.add('cell');
+                cell.dataset.index = i;
+                cell.addEventListener('click', handleUserClick);
+                grid.appendChild(cell);
+            }
+        }
+
+        function startGame() {
+            level = 0;
+            sequence = [];
+            userSequence = [];
+            nextLevel();
+        }
+
+        function nextLevel() {
+            level++;
+            userSequence = [];
+            sequence.push(Math.floor(Math.random() * (numRows * numCols)));
+            showSequence();
+        }
+
+        function showSequence() {
+            let i = 0;
+            const interval = setInterval(() => {
+                if (i >= sequence.length) {
+                    clearInterval(interval);
+                    return;
+                }
+                const cell = document.querySelector(`.cell[data-index='${sequence[i]}']`);
+                cell.style.backgroundColor = getRandomColor();
+                setTimeout(() => {
+                    cell.style.backgroundColor = 'grey';
+                }, 500);
+                i++;
+            }, 1000);
+        }
+
+        function handleUserClick(event) {
+            const index = parseInt(event.target.dataset.index);
+            userSequence.push(index);
+            if (userSequence.length === sequence.length) {
+                if (arraysEqual(userSequence, sequence)) {
+                    alert('Correto! Próximo nível.');
+                    nextLevel();
+                } else {
+                    alert('Errado! Tente novamente.');
+                    startGame();
+                }
+            }
+        }
+
+        function arraysEqual(a, b) {
+            return JSON.stringify(a) === JSON.stringify(b);
+        }
+
+        function getRandomColor() {
+            let letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        createGrid();
+        startGame();
+    </script>
+</body>
+</html>
